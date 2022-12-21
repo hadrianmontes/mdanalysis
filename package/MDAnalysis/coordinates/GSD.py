@@ -84,7 +84,7 @@ class GSDReader(base.ReaderBase):
 
         """
         super(GSDReader, self).__init__(filename, **kwargs)
-        self.filename = filename
+        self._filename = filename
         self.open_trajectory()
         self.n_atoms = self._file[0].particles.N
         self.ts = self._Timestep(self.n_atoms, **self._ts_kwargs)

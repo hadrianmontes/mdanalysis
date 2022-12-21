@@ -521,14 +521,14 @@ class NCDFReader(base.ReaderBase):
             raise ValueError(errmsg) from None
 
         try:
-            self.n_frames = self.trjfile.dimensions['frame']
+            self._n_frames = self.trjfile.dimensions['frame']
             # example trajectory when read with scipy.io.netcdf has
             # dimensions['frame'] == None (indicating a record dimension that
             # can grow) whereas if read with netCDF4 I get
             # len(dimensions['frame']) ==  10: in any case, we need to get
             # the number of frames from somewhere such as the time variable:
-            if self.n_frames is None:
-                self.n_frames = self.trjfile.variables['time'].shape[0]
+            if self._n_frames is None:
+                self._n_frames = self.trjfile.variables['time'].shape[0]
         except KeyError:
             errmsg = (f"NCDF trajectory {self.filename} does not contain "
                       f"frame information")
@@ -597,6 +597,10 @@ class NCDFReader(base.ReaderBase):
 
         # load first data frame
         self._read_frame(0)
+
+    @property
+    def n_frames(self) -> int:
+        return self._n_frames
 
     @staticmethod
     def _verify_units(eval_unit, expected_units):

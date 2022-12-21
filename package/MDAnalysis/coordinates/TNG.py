@@ -170,7 +170,7 @@ class TNGReader(base.ReaderBase):
 
         super(TNGReader, self).__init__(filename, **kwargs)
 
-        self.filename = filename
+        self._filename = filename
         self.convert_units = convert_units
 
         self._file_iterator = pytng.TNGFileIterator(self.filename, "r")

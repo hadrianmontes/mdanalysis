@@ -335,9 +335,12 @@ class PDBReader(base.ReaderBase):
         self._start_offsets = offsets
         # Position of the end of each frame
         self._stop_offsets = offsets[1:] + [end]
-        self.n_frames = len(offsets)
 
         self._read_frame(0)
+
+    @property
+    def n_frames(self) -> int:
+        return len(self._start_offsets)
 
     def Writer(self, filename, **kwargs):
         """Returns a PDBWriter for *filename*.

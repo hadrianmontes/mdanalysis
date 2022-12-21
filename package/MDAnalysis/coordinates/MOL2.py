@@ -169,7 +169,6 @@ class MOL2Reader(base.ReaderBase):
                     blocks.append({"start_line": i, "lines": []})
                 if len(blocks):
                     blocks[-1]["lines"].append(line)
-        self.n_frames = len(blocks)
         self.frames = blocks
 
         sections, coords = self.parse_block(blocks[0])
@@ -178,6 +177,10 @@ class MOL2Reader(base.ReaderBase):
         self.ts = self._Timestep(self.n_atoms, **self._ts_kwargs)
 
         self.ts = self._read_frame(0)
+
+    @property
+    def n_frames(self) -> int:
+        return len(self.frames)
 
     def parse_block(self, block):
         sections = {}

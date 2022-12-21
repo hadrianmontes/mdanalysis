@@ -39,8 +39,8 @@ class AmazingMultiFrameReader(ReaderBase):
     format = 'AmazingMulti'
 
     def __init__(self, filename, **kwargs):
-        self.filename = filename
-        self.n_frames = 10
+        self._filename = filename
+        self._n_frames = 10
         self.n_atoms = 10
         self._auxs = {}
         self._transformations = []
@@ -49,6 +49,10 @@ class AmazingMultiFrameReader(ReaderBase):
         self.ts = Timestep(self.n_atoms)
         self.ts.frame = -1
         self._read_next_timestep()
+
+    @property
+    def n_frames(self):
+        return self._n_frames
 
     def _read_next_timestep(self):
         self.ts.frame += 1

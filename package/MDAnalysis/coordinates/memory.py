@@ -306,7 +306,7 @@ class MemoryReader(base.ProtoReader):
         """
 
         super(MemoryReader, self).__init__()
-        self.filename = filename
+        self._filename = filename
         self.stored_order = order
         self._kwargs = kwargs
 
@@ -322,8 +322,6 @@ class MemoryReader(base.ProtoReader):
             raise TypeError(errmsg) from None
 
         self.set_array(coordinate_array, order)
-        self.n_frames = \
-            self.coordinate_array.shape[self.stored_order.find('f')]
         self.n_atoms = \
             self.coordinate_array.shape[self.stored_order.find('a')]
 
@@ -398,6 +396,10 @@ class MemoryReader(base.ProtoReader):
         self.ts.frame = -1
         self.ts.time = -1
         self._read_next_timestep()
+
+    @property
+    def n_frames(self) -> int:
+        return self.coordinate_array.shape[self.stored_order.find('f')]
 
     @staticmethod
     def _format_hint(thing):
